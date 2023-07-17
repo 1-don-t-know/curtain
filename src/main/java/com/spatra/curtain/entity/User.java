@@ -21,6 +21,9 @@ public class User {
     @Column(name = "user_id")
     private int id;
 
+    @Column(name = "user_name", nullable = false, unique = true)
+    private String username;
+
     @Column(name = "user_email",  nullable = false)
     private String email;
 
@@ -39,11 +42,12 @@ public class User {
     @ColumnDefault("false")
     private Boolean isConfirm;
 
-    public User(String email, String password, UserRoleEnum role, String authkey, Boolean isConfirm) {
-        this.email = email;
+    public User(String username, String password,  String email, UserRoleEnum role,String authKey) {
+        this.username = username;
         this.password = password;
+        this.email = email;
         this.role = role;
-        this.authkey = authkey;
-        this.isConfirm = false;
+        this.authkey=authKey;
+        this.isConfirm=false;
     }
 }
