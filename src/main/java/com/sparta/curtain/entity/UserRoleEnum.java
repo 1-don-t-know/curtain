@@ -1,4 +1,4 @@
-package com.spatra.curtain.entity;
+package com.sparta.curtain.entity;
 
 public enum UserRoleEnum {
     USER(Authority.USER),
