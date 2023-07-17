@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -52,5 +49,20 @@ public class UserController {
         return ResponseEntity.ok().body(new ApiResponseDto("로그인 성공",HttpStatus.OK.value()));
     }
     // 로그아웃
-//    @PostMapping("/user/logout")
+    @PostMapping("/user/logout")
+    // 헤더에서 Authorization 받아오기
+    public ResponseEntity<ApiResponseDto> logout(@RequestHeader("Authorization")String authorizationHeader) {
+        String token = extractTokenFromHeader(authorizationHeader);
+        //로그아웃 처리
+        userService.logout(token);
+        return ResponseEntity.ok().body(new ApiResponseDto("로그아웃 성공", HttpStatus.OK.value()));
+    }
+
+    // 헤더 값에서 토큰 반환
+    private String extractTokenFromHeader(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        return null;
+    }
 }
