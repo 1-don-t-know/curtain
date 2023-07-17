@@ -7,13 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final PasswordEncoder passwordEncoder;
-
-
 
     // 프로필 조회
     public ProfileResponseDto getMyPage(User user) {
@@ -30,10 +29,12 @@ public class UserService {
         }
     }
 
+
     // 비밀번호 변경
+    @Transactional
     public ResponseEntity<String> updatePassword(User user, String newPassword) {
-        String Password = passwordEncoder.encode(newPassword);
-        user.setPassword(Password);
+        String password = passwordEncoder.encode(newPassword);
+        user.setPassword(password);
         return ResponseEntity.ok("Success");
     }
 
