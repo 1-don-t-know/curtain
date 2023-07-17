@@ -52,7 +52,21 @@ public class UserService {
     // - DB에서 username을 사용하여 저장된 회원의 유무를 확인하고 있다면 password 비교하기
     // - 로그인 성공 시, 로그인에 성공한 유저의 정보와 JWT를 활용하여 토큰을 발급하고,
     // - 발급한 토큰을 Header에 추가하고 성공했다는 메시지, 상태코드 와 함께 Client에 반환하기
+    public void login(AuthRequestDto authRequestDto) {
+        String email = authRequestDto.getEmail();
+        String password = authRequestDto.getPassword();
 
+        //유저 이메일 확인
+        User user = userRepository.findByEmailAndIsConfirmIsTrue(email).orElseThrow(
+                () -> new IllegalArgumentException("등록 된 사용자가 없습니다.")
+        );
+
+        //유저 비밀번호 확인
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+    }
 
     //로그아웃
 
