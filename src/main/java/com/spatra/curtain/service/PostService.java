@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
 
-    //게시글 생성
+    //게시글 생성 카테고리 id필요
     public PostResponseDto createPost(PostRequestDto requestDto, User user) {
         Post post = new Post(requestDto);
         post.setUser(user);
