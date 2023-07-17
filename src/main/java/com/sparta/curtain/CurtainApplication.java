@@ -1,4 +1,4 @@
-package com.spatra.curtain;
+package com.sparta.curtain;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

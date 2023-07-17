@@ -1,4 +1,4 @@
-package com.spatra.curtain;
+package com.sparta.curtain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

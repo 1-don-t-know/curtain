@@ -1,16 +1,15 @@
-package com.spatra.curtain.controller;
+package com.sparta.curtain.controller;
 
-import com.spatra.curtain.dto.ApiResponseDto;
-import com.spatra.curtain.dto.AuthRequestDto;
-import com.spatra.curtain.dto.SignupRequestDto;
-import com.spatra.curtain.jwt.JwtUtil;
-import com.spatra.curtain.service.MailSenderService;
-import com.spatra.curtain.service.UserService;
+import com.sparta.curtain.dto.ApiResponseDto;
+import com.sparta.curtain.dto.AuthRequestDto;
+import com.sparta.curtain.dto.SignupRequestDto;
+import com.sparta.curtain.jwt.JwtUtil;
+import com.sparta.curtain.service.MailSenderService;
+import com.sparta.curtain.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailSender;
 import org.springframework.web.bind.annotation.*;
 
 

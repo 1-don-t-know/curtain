@@ -1,4 +1,4 @@
-package com.spatra.curtain.entity;
+package com.sparta.curtain.entity;
 
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.security.core.parameters.P;
 
 @Getter
 @Setter
@@ -36,18 +35,18 @@ public class User {
 
     //메일 인증 관련 인증키값 저장
     @Column(name = "user_authkey")
-    private String authkey;
+    private String authKey;
 
     @Column(name="user_confirmn", nullable = false)
     @ColumnDefault("false")
     private Boolean isConfirm;
 
-    public User(String username, String password,  String email, UserRoleEnum role,String authKey) {
+    public User(String username, String password, String email, UserRoleEnum role,String authKey) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
-        this.authkey=authKey;
+        this.authKey=authKey;
         this.isConfirm=false;
     }
 }
