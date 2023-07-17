@@ -4,6 +4,8 @@ import com.spatra.curtain.dto.AuthRequestDto;
 import com.spatra.curtain.dto.SignupRequestDto;
 import com.spatra.curtain.entity.User;
 import com.spatra.curtain.entity.UserRoleEnum;
+import com.spatra.curtain.entity.TokenLogout;
+import com.spatra.curtain.repository.TokenLogoutRepository;
 import com.spatra.curtain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenLogoutRepository tokenLogoutRepository;
 
     // ADMIN_TOKEN
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
@@ -69,5 +72,11 @@ public class UserService {
     }
 
     //로그아웃
+    @Transactional
+    public void logout(String token) {
+        //로그아웃이 될 경우 토큰을 로그아웃 리스트에 추가
+        TokenLogout tokenLogout = new TokenLogout(token);
+        tokenLogoutRepository.save(tokenLogout);
+    }
 
 }
