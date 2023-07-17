@@ -1,10 +1,12 @@
 package com.spatra.curtain.controller;
 
 import com.spatra.curtain.dto.ApiResponseDto;
+import com.spatra.curtain.dto.AuthRequestDto;
 import com.spatra.curtain.dto.SignupRequestDto;
 import com.spatra.curtain.jwt.JwtUtil;
 import com.spatra.curtain.service.MailSenderService;
 import com.spatra.curtain.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +38,19 @@ public class UserController {
         return ResponseEntity.status(201).body(new ApiResponseDto("회원가입이 완료되었습니다.",HttpStatus.CREATED.value()));
     }
     // 로그인login
-//    @PostMapping("/login")
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponseDto> login(@RequestBody AuthRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
+        try {
+            userService.login(loginRequestDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ApiResponseDto(e.getLocalizedMessage(),HttpStatus.BAD_REQUEST.value()));
+        }
+
+        // JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
+        httpServletResponse.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(loginRequestDto.getEmail(), loginRequestDto.getRole()));
+
+        return ResponseEntity.ok().body(new ApiResponseDto("로그인 성공",HttpStatus.OK.value()));
+    }
     // 로그아웃
 //    @PostMapping("/user/logout")
 }
