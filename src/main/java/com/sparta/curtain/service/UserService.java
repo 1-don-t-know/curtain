@@ -1,12 +1,12 @@
-package com.spatra.curtain.service;
+package com.sparta.curtain.service;
 
-import com.spatra.curtain.dto.AuthRequestDto;
-import com.spatra.curtain.dto.SignupRequestDto;
-import com.spatra.curtain.entity.User;
-import com.spatra.curtain.entity.UserRoleEnum;
-import com.spatra.curtain.entity.TokenLogout;
-import com.spatra.curtain.repository.TokenLogoutRepository;
-import com.spatra.curtain.repository.UserRepository;
+import com.sparta.curtain.entity.User;
+import com.sparta.curtain.dto.AuthRequestDto;
+import com.sparta.curtain.dto.SignupRequestDto;
+import com.sparta.curtain.entity.UserRoleEnum;
+import com.sparta.curtain.entity.TokenLogout;
+import com.sparta.curtain.repository.TokenLogoutRepository;
+import com.sparta.curtain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
