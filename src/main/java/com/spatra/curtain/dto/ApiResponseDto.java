@@ -19,6 +19,4 @@ public class ApiResponseDto {
         this.statusCode = statusCode;
     }
 
-
-
 }
