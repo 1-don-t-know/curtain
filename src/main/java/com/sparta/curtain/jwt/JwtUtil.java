@@ -1,12 +1,20 @@
 package com.sparta.curtain.jwt;
 
 
+
+import com.sparta.curtain.entity.TokenBlacklist;
 import com.sparta.curtain.entity.UserRoleEnum;
+import com.sparta.curtain.repository.TokenBlacklistRepository;
+
+import com.sparta.curtain.entity.UserRoleEnum;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -27,6 +35,11 @@ public class JwtUtil { // JWT (JSON Web Token)을 생성하고 검증하는 클�
     public static final String BEARER_PREFIX = "Bearer ";
     // 토큰 만료시간
     private final long TOKEN_TIME = 60 * 60 * 1000L; // 60분
+
+    // 로그아웃 처리 시 토큰 블랙리스트에 대한 repository
+    // 토큰 블랙리스트 : 사용된 토큰을 사용하지 못하게 저장하여 관리함
+    @Autowired
+    private TokenBlacklistRepository tokenBlacklistRepository;
 
 
     @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
@@ -84,5 +97,10 @@ public class JwtUtil { // JWT (JSON Web Token)을 생성하고 검증하는 클�
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+    // 블랙리스트에 토큰이 있는지 확인, 존재하면 != null 즉 true 반환
+    public boolean isTokenBlacklisted(String tokenValue) {
+        TokenBlacklist tokenBlacklist = tokenBlacklistRepository.findByToken(tokenValue).orElse(null);
+        return tokenBlacklist != null;
     }
 }

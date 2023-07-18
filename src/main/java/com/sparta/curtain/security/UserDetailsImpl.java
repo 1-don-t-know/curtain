@@ -11,23 +11,18 @@ import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private User user;
+    private final User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         UserRoleEnum role = user.getRole();
         String authority = role.getAuthority();
 
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(simpleGrantedAuthority);
 
-        return authorities;
-    }
-
-    public User getUser() {
-        return this.getUser();
-    }
-
+        return authorities;// 반환된 권한 정보는 Spring Security에서 인증과 권한 검사에 활용
+}
     public UserDetailsImpl(User user) {
         this.user = user;
     }
@@ -60,5 +55,9 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User getUser() {
+        return this.user;
     }
 }

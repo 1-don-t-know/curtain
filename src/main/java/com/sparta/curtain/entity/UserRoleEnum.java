@@ -11,12 +11,11 @@ public enum UserRoleEnum {
     }
 
     public String getAuthority() {
-        return this.authority;
+        return this.authority; // 해당 사용자 역할의 권한 값을 반환시킴
     }
 
-    public static class Authority {
+    public static class Authority{
         public static final String USER = "ROLE_USER";
         public static final String ADMIN = "ROLE_ADMIN";
     }
-
 }

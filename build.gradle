@@ -23,7 +23,9 @@ repositories {
 }
 
 dependencies {
-
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //SMTP
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
     // JWT
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
@@ -31,10 +33,6 @@ dependencies {
 
     // json
     implementation 'org.json:json:20230227'
-
-    // Validation
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'

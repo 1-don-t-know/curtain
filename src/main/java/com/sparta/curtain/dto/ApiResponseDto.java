@@ -1,7 +1,7 @@
 package com.sparta.curtain.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,3 +20,4 @@ public class ApiResponseDto {
     }
 
 }
+
