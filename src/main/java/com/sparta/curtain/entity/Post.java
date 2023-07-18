@@ -4,9 +4,11 @@ import com.sparta.curtain.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "post")
 public class Post extends TimeStamped {
@@ -19,6 +21,8 @@ public class Post extends TimeStamped {
     private String title;
     @Column(nullable = false)
     private String content;
+    @Column
+    private Integer likeCount = 0;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -29,16 +33,6 @@ public class Post extends TimeStamped {
         this.content = requestDto.getContent();
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
 
 }
 

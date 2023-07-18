@@ -81,14 +81,6 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
-    public Post findPost(long id) {
-        return postRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("선택한 게시글이 존재하지 않습니다")
-        );
-    }
-
-
-
     // 게시글 좋아요
     @Transactional
     public void likePost(Long id, User user) {
@@ -96,6 +88,7 @@ public class PostService {
         if (postLikeRepository.findByUserAndPost(user, post).isPresent()) {
             throw new DuplicateRequestException("이미 좋아요를 한 게시글 입니다.");
         } else {
+            post.setLikeCount(post.getLikeCount()+1);
             PostLike postLike = new PostLike(user, post);
             postLikeRepository.save(postLike);
         }
@@ -106,9 +99,18 @@ public class PostService {
         Post post = findPost(id);
         Optional<PostLike> postLike = postLikeRepository.findByUserAndPost(user, post);
         if (postLike.isPresent()) {
+            post.setLikeCount(post.getLikeCount() -1);
             postLikeRepository.delete(postLike.get());
         } else {
             throw new IllegalArgumentException("좋아요를 누른 적이 없는 게시글 입니다.");
         }
     }
+
+
+    public Post findPost(long id) {
+        return postRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("선택한 게시글이 존재하지 않습니다")
+        );
+    }
+
 }
