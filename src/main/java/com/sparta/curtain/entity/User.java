@@ -61,7 +61,7 @@ public class User {
 
     }
 
-    public User KakakoIdUpdata(Long kakaoId) {
+    public User kakaoIdUpdate(Long kakaoId) {
         this.kakaoId = kakaoId;
         return this;
     }

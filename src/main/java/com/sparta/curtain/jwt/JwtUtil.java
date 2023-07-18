@@ -98,10 +98,10 @@ public class JwtUtil { // JWT (JSON Web Token)을 생성하고 검증하는 클�
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
-    // 블랙리스트에 토큰이 있는지 확인, 존재하면 != null 즉 true 반환
-    public boolean isTokenBlacklisted(String tokenValue) {
-        TokenLogout tokenBlacklist = tokenLogoutRepository.findToken(tokenValue).orElse(null);
-        return tokenBlacklist != null;
+
+    public boolean isTokenLogout(String tokenValue) {
+        TokenLogout tokenLogout = tokenLogoutRepository.findToken(tokenValue).orElse(null);
+        return tokenLogout != null;
     }
 
 }
