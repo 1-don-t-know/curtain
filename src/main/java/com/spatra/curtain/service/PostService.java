@@ -9,7 +9,9 @@ import com.spatra.curtain.entity.Post;
 import com.spatra.curtain.entity.PostLike;
 import com.spatra.curtain.entity.User;
 import com.spatra.curtain.entity.UserRoleEnum;
+
 import com.spatra.curtain.repository.PostLikeRepository;
+
 import com.spatra.curtain.repository.PostRepository;
 import com.sun.jdi.request.DuplicateRequestException;
 
@@ -88,7 +90,7 @@ public class PostService {
 
 
 
-    // 게시글 좋아좋요
+    // 게시글 좋아요
     @Transactional
     public void likePost(Long id, User user) {
         Post post = findPost(id);
