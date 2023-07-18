@@ -29,7 +29,7 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final ObjectMapper objectMapper;
-    private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    //private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final AccessDeniedHandler customAccessDeniedHandler;
 
     @Bean //BCryptPasswordEncoder 를 Bean 으로 등록하여 비밀번호를 암호화하는 데 사용
@@ -82,7 +82,7 @@ public class WebSecurityConfig {
 
         // 접근 거부 및 인증 예외 처리를 위한 핸들러를 설정
         http.exceptionHandling((exceptionHandling)->exceptionHandling.accessDeniedHandler(customAccessDeniedHandler));
-        http.exceptionHandling((exceptionHandling)->exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint));
+        //http.exceptionHandling((exceptionHandling)->exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint));
         return http.build();        // SecurityFilterChain을 생성
     }
 }
