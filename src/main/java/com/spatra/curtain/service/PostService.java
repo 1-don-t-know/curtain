@@ -6,6 +6,7 @@ import com.spatra.curtain.dto.PostRequestDto;
 import com.spatra.curtain.dto.PostResponseDto;
 import com.spatra.curtain.entity.Post;
 import com.spatra.curtain.entity.User;
+import com.spatra.curtain.entity.UserRoleEnum;
 import com.spatra.curtain.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
