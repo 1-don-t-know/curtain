@@ -41,6 +41,8 @@ public class User {
     @ColumnDefault("false")
     private Boolean isConfirm;
 
+    private Long kakaoId;
+
     public User(String username, String password, String email, UserRoleEnum role,String authKey) {
         this.username = username;
         this.password = password;
@@ -48,5 +50,19 @@ public class User {
         this.role = role;
         this.authKey=authKey;
         this.isConfirm=false;
+    }
+
+    public User(String username, String password, String email, UserRoleEnum role, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.kakaoId = getKakaoId();
+
+    }
+
+    public User KakakoIdUpdata(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this;
     }
 }
