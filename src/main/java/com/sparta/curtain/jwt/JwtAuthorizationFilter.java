@@ -38,7 +38,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     // 요청을 필터링하고 JWT 의 유효성을 검사하는 메서드 (토큰의 존재 여부, 유효성 검사, 블랙리스트 확인을 수행)
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
-        String tokenValue = jwtUtil.getJwtFromHeader(req);
+        String tokenValue = jwtUtil.resolveToken(req);
 
         if (StringUtils.hasText(tokenValue)) {
             if (!jwtUtil.validateToken(tokenValue)) { // false 일 때
@@ -49,14 +49,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                 return;
             }
-            // 블랙리스트에 존재하는 토큰일 경우 조건문에 true 입력, 로그아웃된 토큰 메세지와  인증불가 코드 반환
-            if (jwtUtil.isTokenBlacklisted(tokenValue)) {
-                ApiResponseDto responseDto = new ApiResponseDto("로그아웃된 토큰입니다.", HttpStatus.UNAUTHORIZED.value());
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                res.setContentType("application/json; charset=UTF-8");
-                res.getWriter().write(objectMapper.writeValueAsString(responseDto));
-                return;
-            }
+//            // 블랙리스트에 존재하는 토큰일 경우 조건문에 true 입력, 로그아웃된 토큰 메세지와  인증불가 코드 반환
+//            if (jwtUtil.isTokenBlacklisted(tokenValue)) {
+//                ApiResponseDto responseDto = new ApiResponseDto("로그아웃된 토큰입니다.", HttpStatus.UNAUTHORIZED.value());
+//                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                res.setContentType("application/json; charset=UTF-8");
+//                res.getWriter().write(objectMapper.writeValueAsString(responseDto));
+//                return;
+//            }
 
             Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
 
