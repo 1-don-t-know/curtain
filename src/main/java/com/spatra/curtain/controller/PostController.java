@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
 @RestController
@@ -46,7 +45,7 @@ public class PostController {
         return ResponseEntity.ok().body(result);
     }
 
-    @PutMapping("/posts/{id}") //게시물 수정
+    @PutMapping("/posts/{id}")
     public ResponseEntity<ApiResponseDto> updatePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id, @RequestBody PostRequestDto requestDto) {
         try {
             PostResponseDto result = postService.updatePost(id, requestDto, userDetails.getUser());
@@ -56,7 +55,7 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/posts/{id}") //게시물 삭제
+    @DeleteMapping("/posts/{id}") //게시물 삭
     public ResponseEntity<ApiResponseDto> deletePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
         try {
             postService.deletePost(id, userDetails.getUser());

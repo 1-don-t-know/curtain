@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class PostResponseDto {
+public class PostResponseDto extends ApiResponseDto{
     private Long id;
     private String title;
     private String content;
