@@ -6,17 +6,17 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Component
-public class TokenLogout {
+public class TokenBlacklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "token_id")
     private Long id;
     private String token;
 
-    public TokenLogout() {
+    public TokenBlacklist() {
     }
 
-    public TokenLogout(String token) {
+    public TokenBlacklist(String token) {
         this.token = token;
     }
 }

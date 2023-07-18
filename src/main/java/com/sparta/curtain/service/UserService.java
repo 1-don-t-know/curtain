@@ -4,8 +4,8 @@ import com.sparta.curtain.entity.User;
 import com.sparta.curtain.dto.AuthRequestDto;
 import com.sparta.curtain.dto.SignupRequestDto;
 import com.sparta.curtain.entity.UserRoleEnum;
-import com.sparta.curtain.entity.TokenLogout;
-import com.sparta.curtain.repository.TokenLogoutRepository;
+import com.sparta.curtain.entity.TokenBlacklist;
+import com.sparta.curtain.repository.TokenBlacklistRepository;
 import com.sparta.curtain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final TokenLogoutRepository tokenLogoutRepository;
+    private final TokenBlacklistRepository tokenBlacklistRepository;
 
     // ADMIN_TOKEN
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
@@ -75,8 +75,16 @@ public class UserService {
     @Transactional
     public void logout(String token) {
         //로그아웃이 될 경우 토큰을 로그아웃 리스트에 추가
-        TokenLogout tokenLogout = new TokenLogout(token);
-        tokenLogoutRepository.save(tokenLogout);
+        TokenBlacklist tokenBlacklist = new TokenBlacklist(token);
+        tokenBlacklistRepository.save(tokenBlacklist);
+    }
+
+    public void confirmEmail(String email, String authKey) {
+        User user = userRepository.findByEmail(email).orElseThrow(() ->new IllegalArgumentException("등록된 사용자가 없습니다."));
+        if (!user.getAuthKey().equals(authKey)) {
+            throw new IllegalArgumentException("이메일 인증에 실패했습니다.");
+        }
+        user.setIsConfirmTrue();
     }
 
 }

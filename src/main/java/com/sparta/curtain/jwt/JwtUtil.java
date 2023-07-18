@@ -1,9 +1,9 @@
 package com.sparta.curtain.jwt;
 
 
-import com.sparta.curtain.entity.TokenLogout;
+import com.sparta.curtain.entity.TokenBlacklist;
 import com.sparta.curtain.entity.UserRoleEnum;
-import com.sparta.curtain.repository.TokenLogoutRepository;
+import com.sparta.curtain.repository.TokenBlacklistRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -34,18 +34,13 @@ public class JwtUtil { // JWT (JSON Web Token)을 생성하고 검증하는 클�
     // 로그아웃 처리 시 토큰 블랙리스트에 대한 repository
     // 토큰 블랙리스트 : 사용된 토큰을 사용하지 못하게 저장하여 관리함
     @Autowired
-    private TokenLogout tokenLogout;
+    private TokenBlacklistRepository tokenBlacklistRepository;
 
 
     @Value("${jwt.secret.key}") // Base64 Encode 한 SecretKey
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-    private final TokenLogoutRepository tokenLogoutRepository;
-
-    public JwtUtil(TokenLogoutRepository tokenLogoutRepository) {
-        this.tokenLogoutRepository = tokenLogoutRepository;
-    }
 
 
     @PostConstruct // 인스턴스 생성 및 의존성 주입이 완료된 후에 실행되어야 함
@@ -98,10 +93,9 @@ public class JwtUtil { // JWT (JSON Web Token)을 생성하고 검증하는 클�
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
-
-    public boolean isTokenLogout(String tokenValue) {
-        TokenLogout tokenLogout = tokenLogoutRepository.findToken(tokenValue).orElse(null);
-        return tokenLogout != null;
+    // 블랙리스트에 토큰이 있는지 확인, 존재하면 != null 즉 true 반환
+    public boolean isTokenBlacklisted(String tokenValue) {
+        TokenBlacklist tokenBlacklist = tokenBlacklistRepository.findByToken(tokenValue).orElse(null);
+        return tokenBlacklist != null;
     }
-
 }

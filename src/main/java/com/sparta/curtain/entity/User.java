@@ -65,4 +65,8 @@ public class User {
         this.kakaoId = kakaoId;
         return this;
     }
+
+    public void setIsConfirmTrue() {
+        this.isConfirm=true;
+    }
 }
