@@ -1,5 +1,6 @@
 package com.spatra.curtain.dto;
 
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,5 @@ public class ApiResponseDto {
         this.msg = msg;
         this.statusCode = statusCode;
     }
+
 }

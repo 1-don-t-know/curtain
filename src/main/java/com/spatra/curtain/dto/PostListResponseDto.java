@@ -8,4 +8,6 @@ public class PostListResponseDto {
     public PostListResponseDto(List<PostResponseDto> postList) {
         this.postList = postList;
     }
+
 }
+

@@ -5,18 +5,22 @@ import com.spatra.curtain.dto.PostListResponseDto;
 import com.spatra.curtain.dto.PostRequestDto;
 import com.spatra.curtain.dto.PostResponseDto;
 import com.spatra.curtain.entity.Post;
+
 import com.spatra.curtain.entity.PostLike;
 import com.spatra.curtain.entity.User;
 import com.spatra.curtain.entity.UserRoleEnum;
 import com.spatra.curtain.repository.PostLikeRepository;
 import com.spatra.curtain.repository.PostRepository;
 import com.sun.jdi.request.DuplicateRequestException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 import java.util.Optional;
+
 import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
 
@@ -24,6 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+
     private final PostLikeRepository postLikeRepository;
 
     //게시글 생성 카테고리 id필요
@@ -80,6 +85,7 @@ public class PostService {
                 new IllegalArgumentException("선택한 게시글이 존재하지 않습니다")
         );
     }
+
 
 
     // 게시글 좋아좋요
