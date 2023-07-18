@@ -18,6 +18,9 @@ public class Comment extends TimeStamped {
     @Column(nullable = false)
     private String body;
 
+    @Column
+    private Long likeCnt = 0L;
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
@@ -41,4 +44,9 @@ public class Comment extends TimeStamped {
     public void setPost(Post post) {
         this.post = post;
      }
+
+    public void setLikeCnt(Long likeCnt) {
+        this.likeCnt = likeCnt;
+    }
+
     }
