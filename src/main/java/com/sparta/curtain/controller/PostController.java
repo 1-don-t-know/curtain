@@ -94,4 +94,3 @@ public class PostController {
         return ResponseEntity.ok().body(new ApiResponseDto("게시글 좋아요 취소 성공", HttpStatus.OK.value()));
     }
 }
-
