@@ -40,4 +40,6 @@ public class Post extends TimeStamped {
     public void setUser(User user) {
         this.user = user;
     }
+
 }
+
