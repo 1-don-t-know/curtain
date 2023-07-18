@@ -7,6 +7,9 @@ import com.spatra.curtain.dto.PostRequestDto;
 import com.spatra.curtain.dto.PostResponseDto;
 import com.spatra.curtain.security.UserDetailsImpl;
 import com.spatra.curtain.service.PostService;
+
+import com.sun.jdi.request.DuplicateRequestException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,4 +67,31 @@ public class PostController {
             return ResponseEntity.badRequest().body(new ApiResponseDto("작성자만 삭제 할 수 있습니다.", HttpStatus.BAD_REQUEST.value()));
         }
     }
+
+
+
+    // 게시글 좋아요
+    @PostMapping("/posts/{id}/like")
+    public ResponseEntity<ApiResponseDto> likePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
+        try {
+            postService.likePost(id, userDetails.getUser());
+        } catch (DuplicateRequestException e) {
+            return ResponseEntity.badRequest().body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+
+        return ResponseEntity.ok().body(new ApiResponseDto("게시글 좋아요 성공", HttpStatus.OK.value()));
+    }
+
+    // 게시글 좋아요 취소
+    @DeleteMapping("posts/{id}/like")
+    public ResponseEntity<ApiResponseDto> cancelLikePost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
+        try {
+            postService.cancelLikePost(id, userDetails.getUser());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+
+        return ResponseEntity.ok().body(new ApiResponseDto("게시글 좋아요 취소 성공", HttpStatus.OK.value()));
+    }
 }
+
