@@ -16,7 +16,7 @@ public class Comment extends TimeStamped {
     private Long id;
 
     @Column(nullable = false)
-    private String contents;
+    private String body;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -26,12 +26,12 @@ public class Comment extends TimeStamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Comment(String contents) {
-        this.contents = contents;
+    public Comment(String body) {
+        this.body = body;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public void setUser(User user) {
@@ -40,7 +40,5 @@ public class Comment extends TimeStamped {
 
     public void setPost(Post post) {
         this.post = post;
+     }
     }
-
-
-}
