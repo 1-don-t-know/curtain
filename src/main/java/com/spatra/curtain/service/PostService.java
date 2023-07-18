@@ -5,14 +5,24 @@ import com.spatra.curtain.dto.PostListResponseDto;
 import com.spatra.curtain.dto.PostRequestDto;
 import com.spatra.curtain.dto.PostResponseDto;
 import com.spatra.curtain.entity.Post;
+
+import com.spatra.curtain.entity.PostLike;
 import com.spatra.curtain.entity.User;
 import com.spatra.curtain.entity.UserRoleEnum;
+
+import com.spatra.curtain.repository.PostLikeRepository;
+
 import com.spatra.curtain.repository.PostRepository;
+import com.sun.jdi.request.DuplicateRequestException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import java.util.Optional;
+
 import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
 
@@ -20,6 +30,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+
+    private final PostLikeRepository postLikeRepository;
 
     //게시글 생성 카테고리 id필요
     public PostResponseDto createPost(PostRequestDto requestDto, User user) {
@@ -74,5 +86,30 @@ public class PostService {
         return postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 게시글이 존재하지 않습니다")
         );
+    }
+
+
+
+    // 게시글 좋아요
+    @Transactional
+    public void likePost(Long id, User user) {
+        Post post = findPost(id);
+        if (postLikeRepository.findByUserAndPost(user, post).isPresent()) {
+            throw new DuplicateRequestException("이미 좋아요를 한 게시글 입니다.");
+        } else {
+            PostLike postLike = new PostLike(user, post);
+            postLikeRepository.save(postLike);
+        }
+    }
+
+    @Transactional
+    public void cancelLikePost(Long id, User user) {
+        Post post = findPost(id);
+        Optional<PostLike> postLike = postLikeRepository.findByUserAndPost(user, post);
+        if (postLike.isPresent()) {
+            postLikeRepository.delete(postLike.get());
+        } else {
+            throw new IllegalArgumentException("좋아요를 누른 적이 없는 게시글 입니다.");
+        }
     }
 }

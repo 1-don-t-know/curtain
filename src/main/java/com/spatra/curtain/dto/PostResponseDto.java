@@ -24,4 +24,6 @@ public class PostResponseDto extends ApiResponseDto{
         this.modifiedAt = post.getModifiedAt();
         this.email = post.getUser().getEmail();
 }
+
 }
+
