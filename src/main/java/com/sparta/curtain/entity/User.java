@@ -36,9 +36,9 @@ public class User {
     @Column(name = "user_authkey")
     private String authKey;
 
-    @Column(name="user_confirmn", nullable = false)
-    @ColumnDefault("false")
-    private Boolean isConfirm;
+//    @Column(name="user_confirmn", nullable = false)
+//    @ColumnDefault("false")
+//    private Boolean isConfirm;
 
     private Long kakaoId;
 
@@ -48,7 +48,7 @@ public class User {
         this.email = email;
         this.role = role;
         this.authKey=authKey;
-        this.isConfirm=false;
+        //this.isConfirm=false;
     }
 
     public User(String username, String password, String email, UserRoleEnum role, Long kakaoId) {
@@ -65,7 +65,7 @@ public class User {
         return this;
     }
 
-    public void setIsConfirmTrue() {
-        this.isConfirm=true;
-    }
+    //public void setIsConfirmTrue() {
+     //   this.isConfirm=true;
+    //}
 }

@@ -35,7 +35,7 @@ public class UserService {
     // - 회원 권한 부여하기 (ADMIN, USER) - ADMIN 회원은 모든 게시글, 댓글 수정 / 삭제 가능
     public void signup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
-        String password = signupRequestDto.getPassword();
+        String password = passwordEncoder.encode(signupRequestDto.getPassword());
         String email = signupRequestDto.getEmail();
 
         if (userRepository.findByEmail(email).isPresent()) {
@@ -52,6 +52,7 @@ public class UserService {
 
         String authKey = signupRequestDto.getAuthKey();
         User user = new User(username, password, email, role, authKey);
+        userRepository.save(user);
     }
     // 로그인
     // - username, password를 Client에서 전달받기
@@ -62,8 +63,9 @@ public class UserService {
         String email = authRequestDto.getEmail();
         String password = authRequestDto.getPassword();
 
+
         //유저 이메일 확인
-        User user = userRepository.findByEmailAndIsConfirmIsTrue(email).orElseThrow(
+        User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new IllegalArgumentException("등록 된 사용자가 없습니다.")
         );
 
@@ -82,13 +84,13 @@ public class UserService {
         tokenBlacklistRepository.save(tokenBlacklist);
     }
 
-    public void confirmEmail(String email, String authKey) {
-        User user = userRepository.findByEmail(email).orElseThrow(() ->new IllegalArgumentException("등록된 사용자가 없습니다."));
-        if (!user.getAuthKey().equals(authKey)) {
-            throw new IllegalArgumentException("이메일 인증에 실패했습니다.");
-        }
-        user.setIsConfirmTrue();
-    }
+//    public void confirmEmail(String email, String authKey) {
+//        User user = userRepository.findByEmail(email).orElseThrow(() ->new IllegalArgumentException("등록된 사용자가 없습니다."));
+//        if (!user.getAuthKey().equals(authKey)) {
+//            throw new IllegalArgumentException("이메일 인증에 실패했습니다.");
+//        }
+//        user.setIsConfirmTrue();
+//    }
 
     // 프로필 조회
     public ProfileResponseDto getMyPage(User user) {

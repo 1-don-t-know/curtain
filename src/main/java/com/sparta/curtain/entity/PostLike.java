@@ -1,8 +1,10 @@
 package com.sparta.curtain.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "post_like")
 public class PostLike extends TimeStamped {
     @Id
