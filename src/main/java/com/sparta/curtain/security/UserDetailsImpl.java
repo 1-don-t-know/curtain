@@ -10,11 +10,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
-    private final User user;
 
+    private final User user;
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {// 사용자의 권한(authority) 정보를 반환
-        // 사용자의 역할(UserRoleEnum)을 가져온 뒤, 해당 역할의 권한 값을 얻어와 SimpleGrantedAuthority 객체로 생성
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         UserRoleEnum role = user.getRole();
         String authority = role.getAuthority();
 
@@ -28,37 +27,33 @@ public class UserDetailsImpl implements UserDetails {
         this.user = user;
     }
 
-    public User getUser() {
-        return user;
-    }
     @Override
     public String getPassword() {
-        return null;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return user.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
-
 }

@@ -13,4 +13,5 @@ public class CurtainApplication {
     public static void main(String[] args) {
         SpringApplication.run(CurtainApplication.class, args);
     }
+
 }

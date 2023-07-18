@@ -1,4 +1,4 @@
-package com.spatra.curtain.dto;
+package com.sparta.curtain.dto;
 
 public class UserRequestDto {
 }
