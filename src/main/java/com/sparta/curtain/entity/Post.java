@@ -40,12 +40,17 @@ public class Post extends TimeStamped {
         this.content = requestDto.getContent();
     }
 
+
     public void setTitle(String title) {
         this.title = title;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
     }
 
     public void setUser(User user) {

@@ -113,6 +113,7 @@ public class UserService {
     public ResponseEntity<String> updatePassword(User user, String newPassword) {
         String password = passwordEncoder.encode(newPassword);
         user.setPassword(password);
+        userRepository.save(user);
         return ResponseEntity.ok("Success");
     }
 }
