@@ -41,7 +41,11 @@ public class JwtUtil { // JWT (JSON Web Token)을 생성하고 검증하는 클�
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-    private TokenLogoutRepository tokenLogoutRepository;
+    private final TokenLogoutRepository tokenLogoutRepository;
+
+    public JwtUtil(TokenLogoutRepository tokenLogoutRepository) {
+        this.tokenLogoutRepository = tokenLogoutRepository;
+    }
 
 
     @PostConstruct // 인스턴스 생성 및 의존성 주입이 완료된 후에 실행되어야 함
