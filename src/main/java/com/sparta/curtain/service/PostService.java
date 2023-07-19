@@ -41,13 +41,11 @@ public class PostService {
     public PostResponseDto createPost(PostRequestDto requestDto, User user) {
         Post post = new Post(requestDto);
         post.setUser(user);
-        String category_name = requestDto.getCategory_name();
-        Category category = categoryRepository.findByCategory_name(category_name).orElseThrow(
+        Long category_id = requestDto.getCategory_id();
+        Category category = categoryRepository.findById(category_id).orElseThrow(
                 () -> new IllegalArgumentException("선택한 카테고리가 존재하지 않습니다")
         );
         post.setCategory(category);
-
-
         postRepository.save(post);
 
         return new PostResponseDto(post);
