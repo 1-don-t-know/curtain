@@ -1,6 +1,7 @@
 package com.sparta.curtain.dto;
 
 
+import com.sparta.curtain.entity.Category;
 import com.sparta.curtain.entity.Post;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,12 +22,16 @@ public class PostResponseDto extends ApiResponseDto{
     private String email;
     private List<CommentResponseDto> comments;
 
+
+    Category category;
+
     public PostResponseDto(Post post) {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.likeCount = post.getPostLikes().size();
+        this.category = post.getCategory();
         this.email = post.getUser().getEmail();
         this.comments = post.getComments().stream()
                 .map(CommentResponseDto::new)

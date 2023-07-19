@@ -1,6 +1,7 @@
 package com.sparta.curtain.service;
 
 
+import com.sparta.curtain.dto.ApiResponseDto;
 import com.sparta.curtain.dto.PostRequestDto;
 import com.sparta.curtain.dto.PostResponseDto;
 import com.sparta.curtain.entity.Post;
@@ -15,6 +16,8 @@ import com.sparta.curtain.repository.PostRepository;
 import com.sun.jdi.request.DuplicateRequestException;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,8 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final PostLikeRepository postLikeRepository;
+
+
 
     //게시글 생성 카테고리 id필요
     public PostResponseDto createPost(PostRequestDto requestDto, User user) {

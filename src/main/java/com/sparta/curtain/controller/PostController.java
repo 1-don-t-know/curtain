@@ -26,7 +26,10 @@ public class PostController {
     private final PostService postService;
 
 
-
+//    @GetMapping("/posts/category/{id}")
+//    public ResponseEntity<ApiResponseDto> getCategoryPost(@PathVariable Long id) {
+//        return postService.getCategoryPost(id);
+//    }
     @PostMapping("/posts") //게시물 생성
     public ResponseEntity<PostResponseDto> createPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody PostRequestDto requestDto) {
         PostResponseDto result = postService.createPost(requestDto, userDetails.getUser());

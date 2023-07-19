@@ -1,5 +1,6 @@
 package com.sparta.curtain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.curtain.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,6 +36,12 @@ public class Post extends TimeStamped {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<PostLike> postLikes = new ArrayList<>();
+
+    @JsonIgnore
+    @JoinColumn(name="category_id")
+    @ManyToOne
+    Category category;              //카테고리
+
     public Post(PostRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
