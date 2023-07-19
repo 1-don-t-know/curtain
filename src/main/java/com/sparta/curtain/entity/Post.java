@@ -65,5 +65,8 @@ public class Post extends TimeStamped {
         this.user = user;
     }
 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
 
