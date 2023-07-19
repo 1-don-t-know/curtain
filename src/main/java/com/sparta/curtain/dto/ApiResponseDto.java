@@ -13,11 +13,17 @@ import lombok.Setter;
 public class ApiResponseDto {
     private String msg;
     private Integer statusCode;
+    private Object data;
 
     public ApiResponseDto(String msg, Integer statusCode) {
         this.msg = msg;
         this.statusCode = statusCode;
     }
 
+    public ApiResponseDto(Integer statusCode, String msg, Object data) {
+        this.statusCode = statusCode;
+        this.msg = msg;
+        this.data = data;
+    }
 }
 
