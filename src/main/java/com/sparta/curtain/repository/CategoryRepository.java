@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findAllByOrderByIdAsc();
 
-    Optional<Category> findByCategory_name(String categoryName);
+
 }

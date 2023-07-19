@@ -33,7 +33,6 @@ public class PostService {
     private final CategoryRepository categoryRepository;
     private final PostLikeRepository postLikeRepository;
 
-    private final CategoryRepository categoryRepository;
 
 
 
@@ -45,10 +44,7 @@ public class PostService {
 
         Post post = new Post(requestDto,category);
         post.setUser(user);
-        Long category_id = requestDto.getCategory_id();
-        Category category = categoryRepository.findById(category_id).orElseThrow(
-                () -> new IllegalArgumentException("선택한 카테고리가 존재하지 않습니다")
-        );
+
         post.setCategory(category);
         postRepository.save(post);
 
