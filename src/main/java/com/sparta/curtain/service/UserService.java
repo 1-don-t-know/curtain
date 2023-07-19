@@ -1,9 +1,7 @@
 package com.sparta.curtain.service;
 
-import com.sparta.curtain.dto.ProfileResponseDto;
+import com.sparta.curtain.dto.*;
 import com.sparta.curtain.entity.User;
-import com.sparta.curtain.dto.AuthRequestDto;
-import com.sparta.curtain.dto.SignupRequestDto;
 import com.sparta.curtain.entity.UserRoleEnum;
 import com.sparta.curtain.entity.TokenBlacklist;
 import com.sparta.curtain.repository.TokenBlacklistRepository;
@@ -15,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -48,7 +49,8 @@ public class UserService {
             if (!ADMIN_TOKEN.equals(signupRequestDto.getAdminToken())) {
                 throw new IllegalArgumentException("관리자 암호가 달라 등록이 불가합니다.");
             }
-        } role = UserRoleEnum.ADMIN;
+            role = UserRoleEnum.ADMIN;
+        }
 
         String authKey = signupRequestDto.getAuthKey();
         User user = new User(username, password, email, role, authKey);
@@ -115,5 +117,19 @@ public class UserService {
         user.setPassword(password);
         userRepository.save(user);
         return ResponseEntity.ok("Success");
+    }
+
+
+    // 전체 회원 목록 조회
+    public UserListResponseDto getUserList() {
+        List<UserResponseDto> userList = userRepository.findAll().stream().map(UserResponseDto::new).collect(Collectors.toList());
+
+        return new UserListResponseDto(userList);
+    }
+
+    public UserListResponseDto searchUsers(String keyword) {
+        List<UserResponseDto> userList = userRepository.findByEmailContaining(keyword).stream().map(UserResponseDto::new).collect(Collectors.toList());
+
+        return new UserListResponseDto(userList);
     }
 }
