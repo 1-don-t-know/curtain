@@ -4,12 +4,10 @@ package com.sparta.curtain.service;
 import com.sparta.curtain.dto.ApiResponseDto;
 import com.sparta.curtain.dto.PostRequestDto;
 import com.sparta.curtain.dto.PostResponseDto;
-import com.sparta.curtain.entity.Post;
-import com.sparta.curtain.entity.PostLike;
-import com.sparta.curtain.entity.User;
-import com.sparta.curtain.entity.UserRoleEnum;
+import com.sparta.curtain.entity.*;
 import com.sparta.curtain.dto.PostListResponseDto;
 
+import com.sparta.curtain.repository.CategoryRepository;
 import com.sparta.curtain.repository.PostLikeRepository;
 
 import com.sparta.curtain.repository.PostRepository;
@@ -35,12 +33,20 @@ public class PostService {
 
     private final PostLikeRepository postLikeRepository;
 
+    private final CategoryRepository categoryRepository;
+
 
 
     //게시글 생성 카테고리 id필요
     public PostResponseDto createPost(PostRequestDto requestDto, User user) {
         Post post = new Post(requestDto);
         post.setUser(user);
+        String category_name = requestDto.getCategory_name();
+        Category category = categoryRepository.findByCategory_name(category_name).orElseThrow(
+                () -> new IllegalArgumentException("선택한 카테고리가 존재하지 않습니다")
+        );
+        post.setCategory(category);
+
 
         postRepository.save(post);
 
