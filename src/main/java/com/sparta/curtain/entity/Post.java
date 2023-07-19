@@ -42,9 +42,10 @@ public class Post extends TimeStamped {
     @ManyToOne
     Category category;              //카테고리
 
-    public Post(PostRequestDto requestDto) {
+    public Post(PostRequestDto requestDto, Category category) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
+        this.category = category;
     }
 
 

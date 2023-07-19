@@ -31,7 +31,11 @@ public class CategoryService {
         return ResponseEntity.status(200).body(new ApiResponseDto(HttpStatus.OK.value(), "전체 카테고리 조회 성공", newCategoryList));
     }
     public ResponseEntity<ApiResponseDto> getCategoryPost(Long categoryId) {
-        List<Post> postList = postRepository.findAllByCategory_IdOrderByModifiedAtDesc(categoryId);
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new IllegalArgumentException("맞는 카테고리가 없습니다") );
+
+
+        List<Post> postList = postRepository.findAllByCategoryOrderByModifiedAtDesc(category);
 
         List<PostResponseDto> newPostList = postList.stream().map(PostResponseDto::new).toList();
 

@@ -10,11 +10,11 @@ import java.util.List;
 @Getter
 public class CategoryResponseDto {
     private Long id;
-    private String category_name;
+    private String categoryName;
 
     public CategoryResponseDto(Category category) {
         this.id = category.getId();
-        this.category_name = category.getCategory_name();
+        this.categoryName = category.getCategoryName();
 
     }
 }

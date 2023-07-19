@@ -20,10 +20,7 @@ public class Category {
     private Long id;
 
     @Column(name="category_name", nullable = false)
-    private String category_name;
-//
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
-//    private List<Post> Posts = new ArrayList<>();
+    private String categoryName;
 
 
 }
