@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+  <meta charset="UTF-8">
+  <title>게시글 작성</title>
+  <style>
+
+    .newpost-box {
+      background-color: #FFD43B;
+      width: 1100px;
+      height: 530px;
+      margin: 70px auto;
+      box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.15);
+      background-color: #FFFFFF;
+      padding: 56px 20px 0px 50px;
+      border-radius: 10px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* 수평 가운데 정렬 */
+
+    }
+
+
+    .input-box {
+      width: 460px;
+      height: 435px;
+      /* background-color: blue; */
+      margin-bottom: 20px; /* input-box div 아래 공간 주기 */
+
+    }
+    .post-title {
+      border-width: 0;
+      width: 450px !important;
+      height: 50px;
+      border-radius: 5px;
+      background-color: #E9ECEF;
+
+    }
+    #form-select {
+      background-color: black;
+      margin: 10px;
+    }
+    .post-comment {
+      border-width: 0;
+      width: 450px !important;
+      height: 250px;
+      margin: 14px 0 0;
+      border-radius: 5px;
+      background-color: #E9ECEF;
+    }
+    #post-id-submit {
+      border-width: 0;
+      width: 170px;
+      height: 50px;
+      flex-grow: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      background-color: #252525;
+      cursor: pointer;
+      font-family: SpoqaHanSansNeo;
+      font-size: 18px;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1;
+      letter-spacing: normal;
+      text-align: center;
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+
+<body>
+<div class="newpost-box">
+
+
+  <div class="input-box">
+
+    <input type="text" name="title" id="title" placeholder="title" class="post-title">
+    <br><br>
+
+    <select class="form-select" id="category">
+      <option selected>Pick Category</option>
+      <option value="1">One</option>
+      <option value="2">Two</option>
+      <option value="3">Three</option>
+      <option value="4">Four</option>
+    </select>
+
+    <input type="text" name="content" id="content" placeholder="  contents" class="post-comment">
+  </div>
+  <div class="post-button">
+    <button type="submit" onclick="onPost()" id="post-id-submit">등록하기</button>
+
+  </div>
+</div>
+</body>
+<script>
+  $(document).ready(function () {
+    // 페이지 로딩이 완료되면 카테고리 목록을 가져와서 드롭다운 옵션으로 생성
+    setCategories();
+  });
+
+  function setCategories() {
+    $.ajax({
+      type: 'GET',
+      url: '/api/categories',
+      success: function(response) {
+        let form_category = $('#category');
+        form_category.empty();
+        let data = response;
+        for (let i = 0; i < data.length; i++) {
+          let category = data[i];
+          let category_id = category.id;
+          let name = category.categoryName;
+          form_category.append(`<option value="${category_id}">${name}</option>`);
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error('Error while fetching categories:', error);
+      }
+    });
+  }
+
+  function onPost() {
+    let authCookie = Cookies.get("Authorization");
+    let title = $('#title').val();
+    let content = $('#content').val();
+    let categoryId = $('#category').val();
+
+    if (!title || !categoryId || !content) {
+      alert("모든 필드를 입력해주세요.");
+      return;
+    }
+
+    let data = {
+      title: title,
+      content: content,
+      categoryId: Number(categoryId)
+    };
+
+    $.ajax({
+      url: '/api/posts',
+      type: 'POST',
+      headers: {
+        'Authorization': authCookie
+      },
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      success: function(response) {
+        // 요청 성공 시 처리할 로직
+        alert("등록 성공");
+        window.location.href = '/index.html';
+      },
+      error: function(xhr, status, error) {
+        // 요청 실패 시 처리할 로직
+        console.error('Error while posting data:', error);
+        alert("등록 실패");
+      }
+    });
+  }
+</script>
+</html>

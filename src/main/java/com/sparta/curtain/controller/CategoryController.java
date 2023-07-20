@@ -27,9 +27,5 @@ public class CategoryController {
         return categoryService.getCategoryPost(id);
     }
 
-//    @PostMapping("/categories") // 카테고리 제작 -> 관리자만
-//    public ResponseEntity<CategoryResponseDto> createCategory(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody CategoryRequestDto requestDto) {
-//        CategoryResponseDto result = categoryService.createCategory(requestDto, userDetails.getUser());
-//        return ResponseEntity.status(201).body(result);
-//    }
+
 }
