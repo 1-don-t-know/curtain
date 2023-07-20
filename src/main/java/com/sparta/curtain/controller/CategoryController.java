@@ -27,5 +27,10 @@ public class CategoryController {
         return categoryService.getCategoryPost(id);
     }
 
+    @GetMapping("/categories/main/{id}")
+    public ResponseEntity<ApiResponseDto> getMainCategoryPost(@PathVariable Long id) {
+        return categoryService.getMainCategoryPost(id);
+    }
+
 
 }
