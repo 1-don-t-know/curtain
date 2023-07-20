@@ -9,11 +9,13 @@ import java.util.List;
 public class ProfileResponseDto {
     private String email;
     private String username;
-    private List<PostResponseDto> posts;
+    private List<ProfilePostListResponseDto> posts;
 
 
-    public ProfileResponseDto(User user) {
+    public ProfileResponseDto(User user, List<ProfilePostListResponseDto> postList) {
         this.email = user.getEmail();
         this.username = user.getUsername();
+        this.posts = postList;
     }
+
 }
