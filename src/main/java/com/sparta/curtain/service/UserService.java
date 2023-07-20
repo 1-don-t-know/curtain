@@ -1,9 +1,11 @@
 package com.sparta.curtain.service;
 
 import com.sparta.curtain.dto.*;
+import com.sparta.curtain.entity.Post;
 import com.sparta.curtain.entity.User;
 import com.sparta.curtain.entity.UserRoleEnum;
 import com.sparta.curtain.entity.TokenBlacklist;
+import com.sparta.curtain.repository.PostRepository;
 import com.sparta.curtain.repository.TokenBlacklistRepository;
 import com.sparta.curtain.repository.UserRepository;
 import com.sparta.curtain.security.UserDetailsImpl;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenBlacklistRepository tokenBlacklistRepository;
+    private final PostRepository postRepository;
 
     // ADMIN_TOKEN
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
@@ -96,7 +100,12 @@ public class UserService {
 
     // 프로필 조회
     public ProfileResponseDto getMyPage(User user) {
-        return new ProfileResponseDto(user);
+        List<ProfilePostListResponseDto> postList = postRepository.findAllByUser(user).stream()
+                .map(ProfilePostListResponseDto::new)
+                .sorted(Comparator.comparing(ProfilePostListResponseDto::getCreatedAt).reversed()) // 작성날짜 내림차순
+                .collect(Collectors.toList());
+
+        return new ProfileResponseDto(user, postList);
     }
 
 
