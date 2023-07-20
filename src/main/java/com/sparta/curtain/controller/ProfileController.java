@@ -7,9 +7,11 @@ import com.sparta.curtain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ProfileController {
@@ -17,8 +19,12 @@ public class ProfileController {
 
 
     @GetMapping("/my-page")
-    ProfileResponseDto getMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return userService.getMyPage(userDetails.getUser());
+    String getMyPage(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+        ProfileResponseDto profileResponseDto = userService.getMyPage(userDetails.getUser());
+
+        model.addAttribute("user", profileResponseDto);
+        model.addAttribute("posts", profileResponseDto.getPosts());
+        return "mypage";
     }
 
 

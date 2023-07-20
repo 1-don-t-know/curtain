@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ProfilePostListResponseDto {
+    private Long id;
     private String email;
     private String title;
     private Integer likeCount;
@@ -17,6 +18,7 @@ public class ProfilePostListResponseDto {
 
 
     public ProfilePostListResponseDto(Post post) {
+        this.id =post.getId();
         this.email = post.getUser().getEmail();
         this.title = post.getTitle();
         this.likeCount = post.getLikeCount();
