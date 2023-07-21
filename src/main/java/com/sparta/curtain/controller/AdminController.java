@@ -1,16 +1,20 @@
 package com.sparta.curtain.controller;
 
+import com.sparta.curtain.dto.ApiResponseDto;
 import com.sparta.curtain.dto.PostListResponseDto;
 import com.sparta.curtain.dto.UserListResponseDto;
 import com.sparta.curtain.entity.UserRoleEnum;
+import com.sparta.curtain.security.UserDetailsImpl;
 import com.sparta.curtain.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.method.P;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.RejectedExecutionException;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +38,15 @@ public class AdminController {
     public ResponseEntity<UserListResponseDto> searchUsers(@PathVariable String keyword) {
         UserListResponseDto userList = userService.searchUsers(keyword);
         return ResponseEntity.ok().body(userList);
+    }
+
+    // 회원 탈퇴
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    @DeleteMapping("/users/delete")
+    public ResponseEntity<ApiResponseDto> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok().body(new ApiResponseDto("회원 강제 탈퇴 성공", HttpStatus.OK.value()));
+
     }
 
 }

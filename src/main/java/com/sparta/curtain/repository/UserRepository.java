@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // email 속성을 기준으로 User 엔티티를 조회하는 메서드
     Optional<User> findByEmail(String email);
 
+    Optional<User> findById(Long id);
+
     //Optional<User> findByKakaoId(Long kakaoId);
 
     Optional<User> findByEmailContaining(String keyword);

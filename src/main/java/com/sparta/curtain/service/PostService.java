@@ -77,12 +77,20 @@ public class PostService {
     public PostResponseDto updatePost(Long id, PostRequestDto requestDto, User user) {
         Post post = findPost(id);
         //게시글 작성자와 요청자가 같은지 또는 관리자인지 체크 -> 아닐시 예외 발생
-        if (!user.getRole().equals(UserRoleEnum.ADMIN) && !post.getUser().equals(user)) {
+        // 해당 post의 작성자가 맞는지 확인
+        if (user.getUsername().equals(post.getUser().getUsername())) {
+            // requestDto로부터 받은 게시글의 제목과 내용으로 해당 post 내용 수정하기
+            post.setTitle(requestDto.getTitle());
+            post.setContent(requestDto.getContent());
+            Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(() ->
+                    new IllegalArgumentException("선택한 게시글이 존재하지 않습니다"));
+
+
+        } else {
+            // 해당 post의 작성자가 아니라면 null 반환하기
             throw new RejectedExecutionException();
         }
 
-        post.setTitle(requestDto.getTitle());
-        post.setContent(requestDto.getContent());
 
         return new PostResponseDto(post);
     }
@@ -119,10 +127,7 @@ public class PostService {
         );
     }
 
-    // 게시글 목록 조회
-    public List<Post> getAllPosts() {
-        return postRepository.findAllByOrderByCreatedAtDesc();
-    }
+
 
     public PostListResponseDto searchPosts(String keyword) {
         List<PostResponseDto> postList = postRepository.findByTitleContaining(keyword).stream().map(PostResponseDto::new).collect(Collectors.toList());

@@ -151,4 +151,10 @@ public class UserService {
 
         return new UserListResponseDto(userList);
     }
+
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("유저가 존재하지 않습니다.")
+        );
+    }
 }
