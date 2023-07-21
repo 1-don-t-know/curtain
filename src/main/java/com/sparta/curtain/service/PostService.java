@@ -1,11 +1,8 @@
 package com.sparta.curtain.service;
 
 
-import com.sparta.curtain.dto.ApiResponseDto;
-import com.sparta.curtain.dto.PostRequestDto;
-import com.sparta.curtain.dto.PostResponseDto;
+import com.sparta.curtain.dto.*;
 import com.sparta.curtain.entity.*;
-import com.sparta.curtain.dto.PostListResponseDto;
 
 import com.sparta.curtain.repository.CategoryRepository;
 import com.sparta.curtain.repository.PostLikeRepository;
@@ -126,4 +123,10 @@ public class PostService {
     public List<Post> getAllPosts() {
         return postRepository.findAllByOrderByCreatedAtDesc();
     }
+
+    public PostListResponseDto searchPosts(String keyword) {
+        List<PostResponseDto> postList = postRepository.findByTitleContaining(keyword).stream().map(PostResponseDto::new).collect(Collectors.toList());
+        return new PostListResponseDto(postList);
+    }
+
 }

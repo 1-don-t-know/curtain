@@ -1,16 +1,14 @@
 package com.sparta.curtain.controller;
 
 
-import com.sparta.curtain.dto.ApiResponseDto;
-import com.sparta.curtain.dto.PostRequestDto;
-import com.sparta.curtain.dto.PostResponseDto;
+import com.sparta.curtain.dto.*;
 import com.sparta.curtain.service.PostService;
-import com.sparta.curtain.dto.PostListResponseDto;
 import com.sparta.curtain.security.UserDetailsImpl;
 
 import com.sun.jdi.request.DuplicateRequestException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Controller
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -30,19 +28,19 @@ public class PostController {
     private final PostService postService;
 
     // 메인 페이지 반환
-    @GetMapping("/")
-    public String getPostList(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<PostResponseDto> posts = postService.getAllPosts().stream().map(PostResponseDto::new).collect(Collectors.toList());
-        model.addAttribute("posts", posts);
+//    @GetMapping("/")
+//    public String getPostList(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        List<PostResponseDto> posts = postService.getAllPosts().stream().map(PostResponseDto::new).collect(Collectors.toList());
+//        model.addAttribute("posts", posts);
+//        return "index";
+//    }
 
-        return "index";
-    }
 
 
     @PostMapping("/posts") //게시물 생성
     public ResponseEntity<PostResponseDto> createPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody PostRequestDto requestDto) {
         PostResponseDto result = postService.createPost(requestDto, userDetails.getUser());
-
+        log.info("게시글 작성 시도");
         return ResponseEntity.status(201).body(result);
     }
 
@@ -104,5 +102,11 @@ public class PostController {
         }
 
         return ResponseEntity.ok().body(new ApiResponseDto("게시글 좋아요 취소 성공", HttpStatus.OK.value()));
+    }
+
+    @GetMapping("/posts/search/{keyword}")
+    public ResponseEntity<PostListResponseDto> searchPosts(@PathVariable String keyword) {
+        PostListResponseDto posts = postService.searchPosts(keyword);
+        return ResponseEntity.ok().body(posts);
     }
 }
