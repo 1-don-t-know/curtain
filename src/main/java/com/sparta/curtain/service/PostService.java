@@ -122,4 +122,8 @@ public class PostService {
         );
     }
 
+    // 게시글 목록 조회
+    public List<Post> getAllPosts() {
+        return postRepository.findAllByOrderByCreatedAtDesc();
+    }
 }

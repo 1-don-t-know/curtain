@@ -19,7 +19,6 @@
 <div class="header" style="position:relative;">
     <!--headr-->
     <div id="header-title-login-user">
-        <span id="username"></span> 님의
     </div>
     <div id="header-title-select-shop">
         Select Shop
@@ -29,13 +28,9 @@
     </a>
     <!--/headr-->
 </div>
-<div class="nav">
-    <div class="nav-see active">
-        모아보기
-    </div>
-    <div class="nav-search">
-        탐색하기
-    </div>
+<div th:each="post : ${posts}">
+    <h3 th:text="${post.title}">제목</h3>
+    <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</p>
 </div>
 <div id="see-area">
     <div id="product-container">

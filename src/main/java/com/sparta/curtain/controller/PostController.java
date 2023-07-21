@@ -14,16 +14,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.stream.Collectors;
 
-@RestController
+@Controller
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
+
+    // 메인 페이지 반환
+    @GetMapping("/")
+    public String getPostList(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<PostResponseDto> posts = postService.getAllPosts().stream().map(PostResponseDto::new).collect(Collectors.toList());
+        model.addAttribute("posts", posts);
+
+        return "index";
+    }
 
 
     @PostMapping("/posts") //게시물 생성

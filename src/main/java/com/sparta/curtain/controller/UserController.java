@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping("/signup")
     public String signup(SignupRequestDto signupRequestDto) {
         userService.signup(signupRequestDto);//회원 가입을 처리하기 위해 userService.signup(requestDto)를 호출
-        return "redirect:/";
+        return "redirect:/api/auth/login-page";
     }
 
     @GetMapping("/login-page")
