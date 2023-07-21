@@ -1,10 +1,7 @@
 package com.sparta.curtain.service;
 
 import com.sparta.curtain.dto.CommentResponseDto;
-import com.sparta.curtain.entity.Comment;
-import com.sparta.curtain.entity.Post;
-import com.sparta.curtain.entity.User;
-import com.sparta.curtain.entity.UserRoleEnum;
+import com.sparta.curtain.entity.*;
 import com.sparta.curtain.dto.CommentRequestDto;
 import com.sparta.curtain.repository.CommentRepository;
 import jakarta.transaction.Transactional;
@@ -32,13 +29,11 @@ public class CommentService {
 
     public void deleteComment(Long id, User user) {
         Comment comment = commentRepository.findById(id).orElseThrow();
-
-        // 요청자가 운영자 이거나 댓글 작성자(post.user) 와 요청자(user) 가 같은지 체크
-        if (!user.getRole().equals(UserRoleEnum.ADMIN) && !comment.getUser().equals(user)) {
-            throw new RejectedExecutionException();
+        if(user.getUsername().equals(comment.getUser().getUsername()) || user.getRole().equals(UserRoleEnum.ADMIN)) {
+            commentRepository.delete(comment);
+        } else {
+            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
         }
-
-        commentRepository.delete(comment);
     }
 
     @Transactional
@@ -46,12 +41,11 @@ public class CommentService {
         Comment comment = commentRepository.findById(id).orElseThrow();
 
         // 요청자가 운영자 이거나 댓글 작성자(post.user) 와 요청자(user) 가 같은지 체크
-        if (!user.getRole().equals(UserRoleEnum.ADMIN) && !comment.getUser().equals(user)) {
-            throw new RejectedExecutionException();
+        if (user.getUsername().equals(comment.getUser().getUsername()) || user.getRole().equals(UserRoleEnum.ADMIN)) {
+            comment.setBody(requestDto.getBody());
+        } else {
+            throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
         }
-
-        comment.setBody(requestDto.getBody());
-
         return new CommentResponseDto(comment);
     }
 }

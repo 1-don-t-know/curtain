@@ -65,12 +65,14 @@ public class PostService {
     //게시글 삭제(관리자)
     public void deletePost(Long id, User user) {
         Post post = findPost(id);
-        //게시글 작성자와 요청자가 같은지 또는 관리자인지 체크 -> 아닐시 예외 발생
-        if (!user.getRole().equals(UserRoleEnum.ADMIN) && !post.getUser().equals(user)) {
+
+        if (user.getUsername().equals(post.getUser().getUsername()) || user.getRole().equals(UserRoleEnum.ADMIN)) {
+            // requestDto로부터 받은 게시글의 제목과 내용으로 해당 post 내용 수정하기
+            postRepository.delete(post);
+        } else {
+            // 해당 post의 작성자가 아니라면 null 반환하기
             throw new RejectedExecutionException();
         }
-
-        postRepository.delete(post);
     }
     //게시글 수정(관리자)
     @Transactional
@@ -78,19 +80,19 @@ public class PostService {
         Post post = findPost(id);
         //게시글 작성자와 요청자가 같은지 또는 관리자인지 체크 -> 아닐시 예외 발생
         // 해당 post의 작성자가 맞는지 확인
-        if (user.getUsername().equals(post.getUser().getUsername())) {
+        if (user.getUsername().equals(post.getUser().getUsername()) || user.getRole().equals(UserRoleEnum.ADMIN)) {
             // requestDto로부터 받은 게시글의 제목과 내용으로 해당 post 내용 수정하기
             post.setTitle(requestDto.getTitle());
             post.setContent(requestDto.getContent());
             Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(() ->
                     new IllegalArgumentException("선택한 게시글이 존재하지 않습니다"));
+            post.setCategory(category);
 
 
         } else {
             // 해당 post의 작성자가 아니라면 null 반환하기
             throw new RejectedExecutionException();
         }
-
 
         return new PostResponseDto(post);
     }
