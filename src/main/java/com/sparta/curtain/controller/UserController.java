@@ -1,17 +1,24 @@
 package com.sparta.curtain.controller;
 
 import com.sparta.curtain.dto.ApiResponseDto;
-import com.sparta.curtain.dto.AuthRequestDto;
 import com.sparta.curtain.dto.SignupRequestDto;
+import com.sparta.curtain.dto.UserInfoDto;
+import com.sparta.curtain.entity.UserRoleEnum;
 import com.sparta.curtain.jwt.JwtUtil;
-import com.sparta.curtain.service.MailSenderService;
+import com.sparta.curtain.security.UserDetailsImpl;
 import com.sparta.curtain.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
@@ -20,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
-    private final MailSenderService mailSenderService;
+
 
 
     @GetMapping("/signup")
@@ -34,20 +41,29 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 로그인login
-    @PostMapping("/login")
-    public ResponseEntity<ApiResponseDto> login(@RequestBody AuthRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
-        try {
-            userService.login(loginRequestDto);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new ApiResponseDto(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST.value()));
-        }
-
-        // JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
-        httpServletResponse.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(loginRequestDto.getEmail(), loginRequestDto.getRole()));
-
-        return ResponseEntity.ok().body(new ApiResponseDto("로그인 성공", HttpStatus.OK.value()));
+    @GetMapping("/login-page")
+    public String loginPage() {
+        return "login";
     }
+
+    // 로그인login
+//    @PostMapping("/login")
+//    public String login(@RequestBody AuthRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
+//       // try {
+//            userService.login(loginRequestDto);
+//        //} catch (IllegalArgumentException e) {
+//            //return ResponseEntity.badRequest().body(new ApiResponseDto(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST.value()));
+//      //  }
+//
+//        // JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
+//        //httpServletResponse.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(loginRequestDto.getEmail(), ));
+//
+//        String token = jwtUtil.createToken(loginRequestDto.getEmail(), UserRoleEnum.USER);
+//        jwtUtil.addJwtToCookie(token, httpServletResponse);
+//
+//        //return ResponseEntity.ok().body(new ApiResponseDto("로그인 성공", HttpStatus.OK.value()));
+//        return "redirect:/";
+//    }
 
     // 메일확인
 //    @GetMapping("auth/confirmSignup")
@@ -77,5 +93,22 @@ public class UserController {
     }
 
 
+    // 회원 관련 정보 받기
+//    @GetMapping("/user-info")
+//    @ResponseBody
+//    public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        String username = userDetails.getUser().getUsername();
+//        UserRoleEnum role = userDetails.getUser().getRole();
+//        boolean isAdmin = (role == UserRoleEnum.ADMIN);
+//
+//        return new UserInfoDto(username, isAdmin);
+//    }
+
+
 }
+
+
+
+
+
 

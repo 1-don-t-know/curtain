@@ -12,94 +12,14 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
   <meta charset="UTF-8">
   <title>로그인 페이지</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-    }
 
-    #login-form {
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      border-radius: 4px;
-      text-align: center;
-    }
-    #login-form > div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .login-input-box {
-      width: 250px;
-    }
-    #login-title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    #login-kakao-btn, #login-id-btn {
-      background-color: #000;
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
-      padding: 10px 20px;
-      margin-bottom: 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .login-id-label {
-      font-size: 14px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .login-input-box {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    #login-id-submit {
-      background-color: #000;
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
-      padding: 10px 10px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .alert {
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 4px;
-    }
-
-    .alert-danger {
-      background-color: #FF0000;
-      color: #fff;
-    }
-  </style>
 </head>
 <body>
 <div id="login-form">
-  <div id="login-title">취준생의 비밀 커뮤니티</div>
-  <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=5350636bd29cb95d69ce8c1da3ba4102&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'">
-    카카오로 로그인하기
-  </button>
-  <button id="login-id-btn" onclick="goToSignup()">
+  <div id="login-title">Log into Select Shop</div>
+  <br>
+  <button id="login-id-btn" onclick="location.href='/api/auth/signup'">
+
     회원 가입하기
   </button>
   <div>
@@ -157,7 +77,8 @@
             })
             .fail(function (jqXHR, textStatus) {
               alert("Login Fail");
-              window.location.href = host + '/api/auth/login?error'
+              window.location.href = host + '/api/auth/login-page?error'
+
             });
   }
     if(auth.indexOf('Bearer') === -1 && auth !== ''){
