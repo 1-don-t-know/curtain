@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,26 +39,34 @@ public class UserService {
     // - password는  `최소 8자 이상, 15자 이하이며 알파벳 대소문자(a~z, A~Z), 숫자(0~9), 특수문자`로 구성되어야 한다.
     // - DB에 중복된 username이 없다면 회원을 저장하고 Client 로 성공했다는 메시지, 상태코드 반환하기
     // - 회원 권한 부여하기 (ADMIN, USER) - ADMIN 회원은 모든 게시글, 댓글 수정 / 삭제 가능
-    public void signup(SignupRequestDto signupRequestDto) {
-        String username = signupRequestDto.getUsername();
-        String password = passwordEncoder.encode(signupRequestDto.getPassword());
-        String email = signupRequestDto.getEmail();
+    public void signup(SignupRequestDto requestDto) {
+        String username = requestDto.getUsername();
+        String password = passwordEncoder.encode(requestDto.getPassword());
 
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 Email 입니다.");
+        // 회원 중복 확인
+        Optional<User> checkUsername = userRepository.findByUsername(username);
+        if (checkUsername.isPresent()) {
+            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
-        //사용자 Role
+        // email 중복확인
+        String email = requestDto.getEmail();
+        Optional<User> checkEmail = userRepository.findByEmail(email);
+        if (checkEmail.isPresent()) {
+            throw new IllegalArgumentException("중복된 Email 입니다.");
+        }
+
+        // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
-        if (signupRequestDto.isAdmin()) {
-            if (!ADMIN_TOKEN.equals(signupRequestDto.getAdminToken())) {
-                throw new IllegalArgumentException("관리자 암호가 달라 등록이 불가합니다.");
+        if (requestDto.isAdmin()) {
+            if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
             }
             role = UserRoleEnum.ADMIN;
         }
 
-        String authKey = signupRequestDto.getAuthKey();
-        User user = new User(username, password, email, role, authKey);
+        // 사용자 등록
+        User user = new User(username, password, email, role);
         userRepository.save(user);
     }
     // 로그인
@@ -79,6 +88,7 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+
 
     }
 
