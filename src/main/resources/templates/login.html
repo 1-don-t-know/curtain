@@ -12,17 +12,19 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
   <meta charset="UTF-8">
   <title>로그인 페이지</title>
+
 </head>
 <body>
 <div id="login-form">
   <div id="login-title">Log into Select Shop</div>
   <br>
   <button id="login-id-btn" onclick="location.href='/api/auth/signup'">
+
     회원 가입하기
   </button>
   <div>
-    <div class="login-id-label">아이디</div>
-    <input type="text" name="username" id="username" class="login-input-box">
+    <div class="login-id-label">이메일</div>
+    <input type="text" name="email" id="email" class="login-input-box">
 
     <div class="login-id-label">비밀번호</div>
     <input type="password" name="password" id="password" class="login-input-box">
@@ -33,6 +35,11 @@
 </div>
 </body>
 <script>
+
+  document.getElementById("login-id-btn").addEventListener("click", function() {
+    window.location.href = "/api/auth/signup";
+  });
+
   $(document).ready(function () {
     // 토큰 삭제
     Cookies.remove('Authorization', {path: '/'});
@@ -48,14 +55,14 @@
   const host = 'http://' + window.location.host;
 
   function onLogin() {
-    let username = $('#username').val();
+    let email = $('#email').val();
     let password = $('#password').val();
 
     $.ajax({
       type: "POST",
       url: `/api/auth/login`,
       contentType: "application/json",
-      data: JSON.stringify({username: username, password: password}),
+      data: JSON.stringify({email: email, password: password}),
     })
             .done(function (res, status, xhr) {
               const token = xhr.getResponseHeader('Authorization');
@@ -71,7 +78,13 @@
             .fail(function (jqXHR, textStatus) {
               alert("Login Fail");
               window.location.href = host + '/api/auth/login-page?error'
+
             });
   }
+    if(auth.indexOf('Bearer') === -1 && auth !== ''){
+      auth = 'Bearer ' + auth;
+    }
+
+
 </script>
 </html>
